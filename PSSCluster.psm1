@@ -203,7 +203,7 @@ Function Sync-PSSRepositories{
                 Write-host "Registering Template schedule Task for resource: $($_.Name)"
                 $PSSErrorCount = 0
                 Try{
-                    $Action    = New-ScheduledTaskAction -Execute "Powershell.exe" -Argument "-ExecutionPolicy Bypass -NoProfile -File '$($Global:PSSClusterConfiguration.RunningConfiguration.LocalRepository+'\'+$_.Name+'\Bootstrap.ps1')'" -ErrorAction Stop
+                    $Action    = New-ScheduledTaskAction -Execute "Powershell.exe" -Argument "-ExecutionPolicy Bypass -NoProfile -File `"$($Global:PSSClusterConfiguration.RunningConfiguration.LocalRepository+'\'+$_.Name+'\Bootstrap.ps1')`"" -ErrorAction Stop
                     $Settings  = New-ScheduledTaskSettingsSet -DontStopIfGoingOnBatteries -ErrorAction Stop
                     $null      = Register-ScheduledTask -User "System" -TaskName $_.Name -TaskPath "\PSSCluster" -Description "PSSCluster Resource: $($_.Name)" -Action $Action -Settings $Settings -ErrorAction Stop 
                 }Catch{$PSSErrorCount++;$PSSMessage="An error occur registering scheduled task for resource: $($_.Name).";Write-Error $PSSMessage;Write-PSSEvent -Type Error -ID 1 -Message $PSSMessage}
